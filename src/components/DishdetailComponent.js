@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { render } from '@testing-library/react';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -16,7 +17,7 @@ const RenderDish = ({dish}) => {
     if (dish != null)
     return(
         <Card>
-            <CardImg top src={dish.image} alt={dish.name} />
+             <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
               <CardTitle><h3><b>{dish.name}</b></h3></CardTitle>
               <CardText>{dish.description}</CardText>
@@ -30,7 +31,7 @@ const RenderDish = ({dish}) => {
 
   }
 
-  const RenderComments = ({comments, addComment, dishId}) => {
+  const RenderComments = ({comments, postComment, dishId}) => {
     console.log(comments);
     if (comments != null && comments != undefined)
     {
@@ -60,7 +61,7 @@ const RenderDish = ({dish}) => {
                         </CardText>
                         </CardBody>
                    </Card>
-                   <CommentForm dishId={dishId} addComment={addComment} />
+                   <CommentForm dishId={dishId} postComment={postComment} />
             </div>
                     
 
@@ -93,6 +94,7 @@ class CommentForm extends Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.handleCommentFormSubmit = this.handleCommentFormSubmit.bind(this);
         
+        
       }
     
       toggleNav() {
@@ -108,7 +110,8 @@ class CommentForm extends Component {
 
       handleCommentFormSubmit(values){
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment); 
+        // this.props.addComment(this.props.dishId, values.rating, values.author, values.comment); 
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
       }
 
 
@@ -286,7 +289,7 @@ const Dishdetail = (props) => {
               </div>
               <div  className="col-lg-5 col-md-5 m-1">
                 {console.log(props.comments)}
-                <RenderComments comments = { props.comments } addComment={props.addComment}  dishId={props.dish.id} />
+                <RenderComments comments = { props.comments } postComment={props.postComment}  dishId={props.dish.id} />
               </div>
              
             </div>
