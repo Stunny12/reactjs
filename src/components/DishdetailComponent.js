@@ -6,6 +6,7 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
 import { render } from '@testing-library/react';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -16,6 +17,11 @@ const RenderDish = ({dish}) => {
     
     if (dish != null)
     return(
+        <FadeTransform
+        in
+        transformProps={{
+            exitTransform: 'scale(0.5) translateY(-50%)'
+        }}>
         <Card>
              <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
@@ -23,6 +29,7 @@ const RenderDish = ({dish}) => {
               <CardText>{dish.description}</CardText>
             </CardBody>
         </Card>
+        </FadeTransform>
     );
     else
     return(
@@ -35,18 +42,19 @@ const RenderDish = ({dish}) => {
     console.log(comments);
     if (comments != null && comments != undefined)
     {
-        const comment = comments.map((feedback) => {
+        const comment = <Stagger in>{
+            comments.map((feedback) => {
             return (
-                <div>
+                <Fade in>
                     <div className="row"> 
                         <div   className="col-lg-12 col-md-12 m-1"> {feedback.comment} </div>
                     </div>
                     <div className='row'>
                         <div   className="col-lg-12 col-md-12 m-1"> -- {feedback.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(feedback.date)))} </div>
                     </div>
-            </div>
+            </Fade>
             );
-        });
+        })}</Stagger>;
 
         return (
             <div>
