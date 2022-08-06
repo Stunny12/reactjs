@@ -41,6 +41,8 @@ import { Control, LocalForm, Errors } from 'react-redux-form';
                 handleSubmit(values) {
                     console.log('Current State is: ' + JSON.stringify(values));
                     alert('Current State is: ' + JSON.stringify(values));
+                    this.props.postFeedback(values);
+                    this.props.resetFeedbackForm();
                     // event.preventDefault();
                 }
                 handleBlur = (field) => (evt) => {
